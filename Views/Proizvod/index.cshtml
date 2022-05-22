@@ -1,0 +1,77 @@
+@using ProdajaPica.ViewModels
+
+@model ProizvodViewModels
+
+@{
+    ViewData["Title"] = "Popis proizvoda";
+}
+
+<a asp-action="Create" class="btn btn-primary">Unos novog proizvoda</a>
+
+<pager page-info="@Model.PagingInfo" page-title="Unesite željenu stranicu" page-action="Index" class="float-right">
+</pager>
+
+<table class="table table-sm table-striped table-hover" id="tableMjere">
+    <thead>
+        <tr>
+            <th class="text-center">
+                <a asp-route-sort="1" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 1 ? !Model.PagingInfo.Ascending : true)">
+                    Id
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-route-sort="2" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 2 ? !Model.PagingInfo.Ascending : true)">
+                    Naziv
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-route-sort="3" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 3 ? !Model.PagingInfo.Ascending : true)">
+                    Cijena
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-route-sort="4" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-ascending="@(Model.PagingInfo.Sort == 4 ? !Model.PagingInfo.Ascending : true)">
+                    Količina
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mjere in Model.Proizvod)
+        {
+            <tr>
+                <td class="text-center">@mjere.Id</td>
+                <td class="text-center">@mjere.Naziv</td>
+                <td class="text-center">@mjere.Cijena</td>
+                <td class="text-center">@mjere.Kolicina</td>
+                <td class="btn-group">
+                    <a asp-action="Edit" asp-route-id="@mjere.Id" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending"
+                    class="btn btn-sm" title="Ažuriraj">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form asp-action="Delete" method="POST" asp-route-page="@Model.PagingInfo.CurrentPage"
+                    asp-route-sort="@Model.PagingInfo.Sort" asp-route-ascending="@Model.PagingInfo.Ascending">
+                        <input type="hidden" name="Id" value="@mjere.Id" />
+                        <button type="submit" class="btn bt-sm btn-danger delete" title="Obriši">
+                            <i class="fa fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section styles {
+
+}
+
+@section scripts{
+
+}

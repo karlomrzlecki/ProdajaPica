@@ -1,0 +1,47 @@
+@model Narudzba
+
+@{
+    ViewBag.Title = "Dodavanje narudzbe";
+}
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <div><span asp-validation-for="Status" class="text-danger"></span></div>
+        <select class="form-control" asp-for="Status" asp-items="ViewBag.Status">
+            <option selected value="" disabled>-Odaberite status-</option>
+        </select>
+    </div>
+    @* <div class="form-group">
+        <label asp-for="Status"></label>
+        <div><span asp-validation-for="Status" class="text-danger"></span></div>
+        <input asp-for="Status" class="form-control">
+        </div> *@
+    <div class="form-group">
+        <label asp-for="Datum"></label>
+        <div><span asp-validation-for="Datum" class="text-danger"></span></div>
+        <input asp-for="Datum" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Napomena"></label>
+        <div><span asp-validation-for="Napomena" class="text-danger"></span></div>
+        <input asp-for="Napomena" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Iznos"></label>
+        <div><span asp-validation-for="Iznos" class="text-danger"></span></div>
+        <input asp-for="Iznos" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="KupacId"></label>
+        <div><span asp-validation-for="KupacId" class="text-danger"></span></div>
+        <select class="form-control" asp-for="KupacId" asp-items="ViewBag.Kupci">
+            <option selected value="" disabled>-Odaberite kupca-</option>
+        </select>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Dodaj</button>
+        <a asp-action="Index" class="btn btn-secondary">Odustani</a>
+    </div>
+</form>

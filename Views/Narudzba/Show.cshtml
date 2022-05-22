@@ -1,0 +1,122 @@
+@model NarudzbaViewModel
+@{
+    ViewBag.Title = "Narudzba br. " + @Model.Id;
+}
+
+<div class="container">
+
+    <partial name="PreviousNext" model="@Model" />
+
+    <hr />
+
+    <div class="text-center">
+        <a class="btn btn-primary cancel" asp-action="Edit" asp-route-id="@Model.Id" asp-route-page="@ViewBag.Page"
+            asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+            asp-route-position="@ViewBag.Position">
+            Uredi
+        </a>
+        <a asp-action="Index" asp-route-page="@ViewBag.Page" asp-route-sort="@ViewBag.Sort"
+            asp-route-ascending="@ViewBag.Ascending" asp-route-position="@ViewBag.Position" class="btn btn-secondary">
+            Natrag
+        </a>
+    </div>
+
+    <div class="my-5">
+        <div class="row mb-3">
+            <b>Kupac</b>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-2">
+                Naziv:
+            </div>
+            <div class="col-sm-4">
+                @Model.Kupac.NazivObjekta
+            </div>
+        </div>
+
+        <div class="my-5">
+            <div class="row mb-3">
+                <b>Informacije narudzbe</b>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    Status:
+                </div>
+                <div class="col-sm-4">
+                    @Model.Status
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    Napomena:
+                </div>
+                <div class="col-sm-4">
+                    @Model.Napomena
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    Datum:
+                </div>
+                <div class="col-sm-4">
+                    @* @Model.Datum.Value.ToString("dd.M.yyyy.") *@
+                    @Model.Datum
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    Iznos:
+                </div>
+                <div class="col-sm-4">
+                    @Model.Iznos
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mb-5">
+            <div class="col text-center">
+                <h4>
+                    Proizvodi
+                </h4>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        @{
+                            string[] naslovi = { "Naziv", "Cijena", "Kolicina" };
+                            for (int i = 0; i < naslovi.Length; i++)
+                            {
+                                <th class="text-center">
+                                    @naslovi[i]
+                                </th>
+                            }
+                        }
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var proizvod in Model.Proizvod)
+                    {
+                        <tr>
+                            <td class="text-left col-sm-6">
+                                @proizvod.Naziv
+                            </td>
+                            <td class="text-right col-sm-2">
+                                @proizvod.Cijena
+                            </td>
+                            <td class="text-center col-sm-2">
+                                @proizvod.Kolicina
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* <div class="text-center">
+        <a asp-action="Index" asp-route-page="@ViewBag.Page" asp-route-sort="@ViewBag.Sort"
+        asp-route-ascending="@ViewBag.Ascending" class="btn btn-primary">Natrag</a>
+        </div> *@
+</div>

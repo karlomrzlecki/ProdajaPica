@@ -1,0 +1,186 @@
+@model NarudzbaViewModel
+
+@{
+    ViewBag.Title = "Izmjena narudzbe br. " + @Model.Id;
+}
+
+<div class="container">
+
+    <partial name="PreviousNextEdit" model="@Model" />
+
+    <hr />
+
+    <div class="row justify-content-center">
+        <form id="narudzba_form" method="post" asp-action="Edit" asp-route-page="@ViewBag.Page"
+            asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+            asp-route-position="@ViewBag.Position" class="align-center">
+            <input asp-for="Id" type="hidden" />
+
+            <div asp-validation-summary="All"></div>
+            @* Buttons *@
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit" id="save">Spremi</button>
+                <a asp-action="Show" asp-route-id="@Model.Id" asp-route-page="@ViewBag.Page"
+                    asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+                    asp-route-position="@ViewBag.Position" class="btn btn-secondary">
+                    Natrag
+                </a>
+            </div>
+            @* End buttons *@
+            <div class="form-group row mb-3 mt-5">
+                <div class="form-group">
+                    <label asp-for="Status"></label>
+                    <div><span asp-validation-for="Status" class="text-danger"></span></div>
+                    <select class="form-control" asp-for="Status" asp-items="ViewBag.Status">
+                        <option selected value="" disabled>-Odaberite status-</option>
+                    </select>
+                </div>
+                @* <div class="form-group mr-3">
+                    <label asp-for="Status"></label>
+                    <div><span asp-validation-for="Status" class="text-danger"></span></div>
+                    <input asp-for="Status" class="form-control">
+                    </div> *@
+                <div class="form-group mr-3">
+                    <label asp-for="Datum"></label>
+                    <div><span asp-validation-for="Datum" class="text-danger"></span></div>
+                    <input asp-for="Datum" class="form-control">
+                </div>
+                <div class="form-group mr-3">
+                    <label asp-for="Napomena"></label>
+                    <div><span asp-validation-for="Napomena" class="text-danger"></span></div>
+                    <input asp-for="Napomena" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Iznos"></label>
+                    <div><span asp-validation-for="Iznos" class="text-danger"></span></div>
+                    <input asp-for="Iznos" class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="form-group">
+                    <label asp-for="KupacId"></label>
+                    <div><span asp-validation-for="KupacId" class="text-danger"></span></div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <input asp-for="KupacId" readonly="readonly" class="form-control"
+                                data-autocomplete-placeholder="kupac" />
+
+                        </div>
+                        @* <select class="form-control" asp-for="PredsjednikId" asp-items="ViewBag.Predsjednici">
+                            <option selected value="" disabled>-Odaberite predsjednika-</option>
+                            </select> *@
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" data-autocomplete="Narudzba"
+                                data-autocomplete-placeholder-name="kupac" value="@Model.Kupac.NazivObjekta" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* <div class="row mb-5">
+                <partial name="Mjere" model="Model.Mjere"/>
+                </div> *@
+        </form>
+    </div>
+
+
+    <div class="row mb-5">
+        <div class="col text-center">
+            <h4>
+                Proizvodi
+            </h4>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    @{
+                        string[] naslovi = { "Naziv", "Cijena", "Kolicina" };
+                        for (int i = 0; i < naslovi.Length; i++)
+                        {
+                            <th class="text-center">
+                                @naslovi[i]
+                            </th>
+                        }
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var proizvod in Model.Proizvod)
+                {
+                    <form id="@("update"+proizvod.Id)" asp-action="UpdateProizvod" method="POST"
+                    asp-route-page="@ViewBag.Page" asp-route-sort="@ViewBag.Sort"
+                    asp-route-ascending="@ViewBag.Ascending" asp-route-position="@ViewBag.Position">
+                        <input type="hidden" name="Id" value="@proizvod.Id" />
+                        <input type="hidden" name="NarudzbaId" value="@Model.Id" />
+                    </form>
+                    <tr>
+                        <td class="text-left col-sm-6">
+                            <input class="form-control" type="text" form="@("update"+proizvod.Id)" name="Naziv"
+                            value="@proizvod.Naziv">
+                        </td>
+                        <td class="text-right col-sm-2">
+                            <input class="form-control" type="text" form="@("update"+proizvod.Id)" name="Cijena"
+                            value="@proizvod.Cijena">
+                        </td>
+                        <td class="text-center col-sm-2">
+                            <input class="form-control" type="text" form="@("update"+proizvod.Id)" name="Kolicina"
+                            value="@proizvod.Kolicina">
+                        </td>
+                        <td>
+                            <form asp-action="DeleteProizvod" method="POST" asp-route-page="@ViewBag.Page"
+                            asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+                            asp-route-position="@ViewBag.Position">
+                                <input type="hidden" name="Id" value="@proizvod.Id" />
+                                <input type="hidden" name="NarudzbaId" value="@Model.Id" />
+                                <button type="submit" class="btn bt-sm btn-danger delete" title="Obriši">
+                                    <i class="fa fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <button type="submit" form="@("update"+proizvod.Id)" class="btn bt-sm" title="Ažuriraj">
+                                <i class="fa fa-save"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <form asp-action="CreateProizvod" method="POST" asp-route-page="@ViewBag.Page"
+                        asp-route-sort="@ViewBag.Sort" asp-route-ascending="@ViewBag.Ascending"
+                        asp-route-position="@ViewBag.Position">
+                        <input type="hidden" name="NarudzbaId" value="@Model.Id" />
+                        <td class="text-left col-sm-6">
+                            <input class="form-control" required type="text" name="Naziv">
+                        </td>
+                        <td class="text-right col-sm-2">
+                            <input class="form-control" required type="text" name="Cijena">
+                        </td>
+                        <td class="text-center col-sm-2">
+                            <input class="form-control" required type="text" name="Kolicina">
+                        </td>
+                        <td>
+                            <button type="submit" class="btn bt-sm" title="Dodaj">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @* <div class="text-center">
+        <a asp-action="Index" asp-route-page="@ViewBag.Page" asp-route-sort="@ViewBag.Sort"
+        asp-route-ascending="@ViewBag.Ascending" class="btn btn-primary">Natrag</a>
+        </div> *@
+</div>
+
+@section styles{
+<link rel="stylesheet" href="~/lib/jquery-ui/themes/base/jquery-ui.css" />
+}
+
+@section scripts{
+<script src="~/lib/jquery-ui/jquery-ui.js"></script>
+<script src="~/lib/jquery-ui/ui/i18n/datepicker-hr.js"></script>
+<script src="~/js/autocomplete.js"></script>
+}
